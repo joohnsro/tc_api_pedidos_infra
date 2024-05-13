@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tech-challenge-api-pedidos
+  labels:
+    app: tech-challenge-api-pedidos
+spec:
+  template:
+    metadata:
+      name: tech-challenge-api-pedidos
+      labels:
+        app: tech-challenge-api-pedidos
+    spec:
+      containers:
+      - name: tech-challenge-api-pedidos-container
+        image: joohnsro/tc3-api-pedidos:latest
+        env:
+          - name: MONGODB_CONNECTION_STRING 
+            valueFrom:
+              configMapKeyRef:
+                name: api-pedidos-environment-data
+                key: mongodb_connection_string
+        ports:
+          - containerPort: 3000
+        resources:
+          requests:
+            cpu: 1m
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tech-challenge-api-pedidos
